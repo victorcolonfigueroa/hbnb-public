@@ -1,2 +1,3 @@
-# hbnb-public
-HBnB Evolution Project - Public access
+# HBnB Evolution Project - Public access files
+
+
