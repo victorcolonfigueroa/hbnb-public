@@ -23,6 +23,90 @@
             <!-- List of places will be populated dynamically -->
         </section>
     </main>
+    <script>
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginLink = document.getElementById('login-link');
+            const token = getCookie('token');
+
+            if (token) {
+                loginLink.style.display = 'none';
+            } else {
+                loginLink.style.display = 'block';
+            }
+
+            fetch('/api/places', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch places');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const placesList = document.getElementById('places-list');
+                data.places.forEach(place => {
+                    const placeItem = document.createElement('div');
+                    placeItem.classList.add('place-item');
+                    placeItem.innerHTML = `
+                    <h3>${place.name}</h3>
+                    <p>${place.description}</p>
+                    <p><strong>Location:</strong> ${place.location}<p>
+                    `;
+                    placesList.appendChild(placeItem);
+                    countries.add(place.country);
+                });
+
+                countries.forEach(country => {
+                    const option = document.createElement('option');
+                    ontion.value = country;
+                    option.textContext = country;
+                    countryFilter.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Optionally, display an error message to the user
+                const messageDiv = document.getElementById('message');
+                messageDiv.textContent = 'Failed to load places. Please try again later.';
+                messageDiv.style.color = 'red';
+            });
+            
+            //for click events on place items
+            document.getElementById('places-list').addEventListener('click', function(event) {
+                if (event.target.closest('.place-item')) {
+                    const placeItem = event.target.closest('.place-item');
+                    handlePlaceClick(placeItem);
+                }
+            });
+
+            function handlePlaceClick(placeItem) {
+                alert(`You clicked on: ${placeItem.querySelector('h3').textContent}`);
+            }
+
+            document.gertElementById('country-filter').addEventListener('change', function(event) {
+              const selectedCountry = event.target.value;
+              const placeItems = document.querySelectorAll('.place-item');
+              
+              placeItem.forEach(placeItem => {
+                if (selectedCountry === '' || placeItem.dataset.country === selectedCountry) {
+                    placeItem.style.display = 'block';
+                } else {
+                    placeItem.style.display = 'none';
+                }
+              });
+            });
+        });
+    </script>
     <script src="scripts.js"></script>
 </body>
 </html>

@@ -19,6 +19,54 @@
             <button type="submit">Login</button>
         </form>
     </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('login-form');
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                console.log('Email:', email);
+                console.log('Password:', password);
+
+                fetch("/login", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({email: email, password: password})
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error ('Login failed');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Success:', data);
+
+                    document.cookie = `token=${data.token}; path=/;`;
+
+                    // Handle successful login here
+                    const messageDiv = document.getElemetById('message');
+                    messageDiv.textContent = 'Login successful!';
+                    messageDiv.style.color = 'green';
+
+                    //Redirect to main page
+                    window.location.href = 'index.html';
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    //Display error message
+                    const messageDiv  = document.getElementById('message');
+                    messageDiv.textContent = 'Login failed, please try again.'
+                    messageDiv.style.color = 'red';
+                });
+            });
+        });
+    </script>
     <script src="scripts.js"></script>
 </body>
 </html>
