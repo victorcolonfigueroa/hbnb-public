@@ -19,6 +19,64 @@
             <button type="submit">Submit</button>
         </form>
     </main>
+    <script>
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = getCookie('token');
+
+            if (!token) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            window.authToken = token;
+
+            //extrac place id from url query parameter
+            const placeId = new URLSearchParams(window.location.search).get('id');
+            if (placeId) {
+                document.getElementById('place').value = placeId;
+            } else {
+                console.error('Place ID not found in URL');
+            }
+
+            const reviewForm = document.getElementById('review-form');
+            reviewForm.addEventListener('submit', function(event){
+                event.preventDefault();
+
+                const reviewText = document.getElementById('review').value;
+
+                fetch('/api/reviews', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        paldeId: placeId,
+                        review: reviewText
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to submit review');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Review submited successfully');
+                })
+                .catch(error => {
+                    console.error('Error', error);
+                    alert('Failed to submit review, Please try again later.');
+                })
+            })
+        });
+    </script>
     <script src="scripts.js"></script>
 </body>
 </html>

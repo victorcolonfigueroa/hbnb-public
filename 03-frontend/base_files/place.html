@@ -24,6 +24,57 @@
             </form>
         </section>
     </main>
+    <script>
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`;${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = getCookie('token');
+            const placeId = new URLSearchParams(window.location.search).get('id');
+            const placeDetailsSection =  document.getElementById('place-details');
+            const addReviewSection = document.getElementById('add-review');
+
+            if (!token) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            //fetch place details
+            fetch(`/api/places/${placeId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if(!response.ok) {
+                    throw new Error('Failed to fetch place details');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const place = data.place;
+                placeDetails.inner.HTML = `
+                <h1>${place.name}</h1>
+                <p>${place.description}</p>
+                <p><strong>Location:</strong>${place.location}</p>
+                `;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                placeDetailsSection.textContent = 'Failed to load place details. Please try again later.';
+                placeDetailsSection.style.color = 'red';
+            });
+
+            //show add review if form only if the user is authenticated
+            if (!token) {
+                addReviewSection.style.display = 'none';
+            }
+        });
+    </script>
     <script src="scripts.js"></script>
 </body>
 </html>
