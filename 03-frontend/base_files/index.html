@@ -8,17 +8,28 @@
 </head>
 <body>
     <header>
-        <nav>
-            <a href="login.html" id="login-link">Login</a>
-        </nav>
+        <img src="logo.png" alt="Aplication logo" class="logo">
+        <a href="login.html" class="login-button">Login</a>
     </header>
+         
     <main>
+        <h1 id="place-title">List of Places</h1>
         <section id="filter">
             <label for="country-filter">Filter by Country:</label>
             <select id="country-filter">
                 <!-- Options will be populated dynamically -->
             </select>
         </section>
+        <div id="places-list">
+
+            <div class="place-card">
+                <img src="place1.jpg" alt="Place 1" class="place-image">
+                <div class="place-info">
+                    <h2 class="place-name">Place 1</h2>
+                    <p class="place-price">Price per night: $100</p>
+                    <p class="place-location">Location: City, Country</p>
+                    <button class="details-button">View Details</button>
+
         <section id="places-list">
             <!-- List of places will be populated dynamically -->
         </section>
@@ -46,33 +57,50 @@
                     'Authorization': `Bearer ${token}`
                 }
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch places');
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
-                const placesList = document.getElementById('places-list');
-                data.places.forEach(place => {
-                    const placeItem = document.createElement('div');
-                    placeItem.classList.add('place-item');
-                    placeItem.innerHTML = `
-                    <h3>${place.name}</h3>
-                    <p>${place.description}</p>
-                    <p><strong>Location:</strong> ${place.location}<p>
-                    `;
-                    placesList.appendChild(placeItem);
-                    countries.add(place.country);
-                });
+                const placesList = document.getElementById('palces-list');
+                data.forEach(place => {
+                    const placeCard = document.createElement('div');
+                    placeCard.className = 'place=card';
 
-                countries.forEach(country => {
-                    const option = document.createElement('option');
-                    ontion.value = country;
-                    option.textContext = country;
-                    countryFilter.appendChild(option);
-                });
+                    const placeImage = document.createElement('img');
+                    placeImage.className = 'pace-image';
+                    placeImage.src = place.image;
+                    placeImage.alt = place.name;
+
+                    const placeInfo = document.createElement('div');
+                    placeInfo.className = 'place-info';
+
+                    const placeName = document.createElement('h2');
+                    placeName.className = 'place-name';
+                    placeName.textContent = palce.name;
+
+                    const placePrice = document.createElement('p');
+                    placePrice.className = 'place-price';
+                    placePrice.textContent = `Price per night: $${place.price}`;
+
+                    const placeLocation = docuemnt.createElement('p');
+                    placeLocation.className = 'place-Location';
+                    placeLocation.textContent = `Location: ${place.location}`;
+
+                    const  detailsButton = document.createElement('button');
+                    detailsButton.className = 'details-location';
+                    detailsButton.textContent = 'View Details';
+
+                    placeInfo.appendChild(placeName);
+                    placeInfo.appendChild(placePrice);
+                    placeInfo.appendChild(placeLocation);
+                    placeInfo.appendChild(detailsButton);
+
+                    placeInfo.appendChild(placeImage);
+                    placeInfo.appendChild(placeInfo);
+
+                    placeInfo.appendChild(placeCard);
+
+                })
             })
+
             .catch(error => {
                 console.error('Error:', error);
                 // Optionally, display an error message to the user

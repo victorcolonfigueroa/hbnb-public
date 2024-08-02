@@ -1,0 +1,95 @@
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	background-color: #f4f4f4;
+}
+
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
+	background-color: orange;
+	color: #fff;
+}
+
+header .logo {
+	height: 50px;
+}
+
+header .login-button {
+	color: white;
+	text-decoration: none;
+	padding: 10px 20px;
+}
+
+#place-title {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+footer { 
+	text-align: center;
+	padding: 20px;
+	background-color: #333;
+	color: #fff;
+	position: fixed;
+	width: 100%;
+	bottom: 0;
+}
+
+#places-list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.place-card {
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	margin: 10px;
+	width: 300px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+}
+
+.place-image {
+	width: 100%;
+	height: auto;
+}
+
+.place-info {
+	padding: 15px;
+}
+
+.place-name {
+	margin: 0;
+	font-size: 1.5em;
+	color: #333;
+}
+
+.place-price,
+.place-location {
+	color: #666;
+	font-size: 1em;
+}
+
+.details-button {
+	background-color: orange;
+	color: #fff;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 5px;
+	cursor: pointer;
+	text-align: center;
+	display: block;
+	width: 100%;
+	margin-top: 10px;
+}
+
+.details-button:hover {
+	background-color: #0056b3;
+}
