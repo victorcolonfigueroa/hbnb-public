@@ -58,7 +58,7 @@
             <!-- List of places will be populated dynamically -->
         </section>
     </main>
-    <script>
+    <script src="scripts.js">
         function getCookie(name) {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
@@ -83,7 +83,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                const placesList = document.getElementById('palces-list');
+                const placesList = document.getElementById('places-list');
                 data.forEach(place => {
                     const placeCard = document.createElement('div');
                     placeCard.className = 'place=card';
@@ -98,13 +98,13 @@
 
                     const placeName = document.createElement('h2');
                     placeName.className = 'place-name';
-                    placeName.textContent = palce.name;
+                    placeName.textContent = place.name;
 
                     const placePrice = document.createElement('p');
                     placePrice.className = 'place-price';
                     placePrice.textContent = `Price per night: $${place.price}`;
 
-                    const placeLocation = docuemnt.createElement('p');
+                    const placeLocation = document.createElement('p');
                     placeLocation.className = 'place-Location';
                     placeLocation.textContent = `Location: ${place.location}`;
 
@@ -122,16 +122,53 @@
 
                     placeInfo.appendChild(placeCard);
 
-                })
+                });
             })
-
             .catch(error => {
-                console.error('Error:', error);
-                // Optionally, display an error message to the user
-                const messageDiv = document.getElementById('message');
-                messageDiv.textContent = 'Failed to load places. Please try again later.';
-                messageDiv.style.color = 'red';
+                console.error('Error fetching places:', error);
             });
+
+            function populatePlacesDetails(place) {
+                const placeDetails = document.getElementById('place-details');
+                placeDetails.innerHTML = '';
+
+                const placeName = document.createElement('h2');
+                placeName.className = 'place-image';
+                placeName.textContent = place.name;
+
+                const placeImage = document.createElement('img');
+                placeImage.className = 'place-image';
+                placeImage.src = place.image;
+                placeImage.alt = place.name;
+
+                const placePrice = document.createElement('p');
+                placePrice.className = 'place-price';
+                placePrice.textContent = `Price per night: $${place.price}`;
+
+                const placeLocation = document.createElement('p');
+                placeLocation.className = 'place-location';
+                placeLocation.textContent = `Location: ${place.location}`;
+
+                const placeDescription = document.createElement('p');
+                placeDescription.className = 'place-description';
+                placeDescription.textContent = place.description;
+
+                placeDetails.appendChild(placeName);
+                placeDetails.appendChild(placeImage);
+                placeDetails.appendChild(placePrice);
+                placeDetails.appendChild(placeLocation);
+                placeDetails.appendChild(placeDescription);
+
+            }
+
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Optionally, display an error message to the user
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = 'Failed to load places. Please try again later.';
+            messageDiv.style.color = 'red';
+        });
             
             //for click events on place items
             document.getElementById('places-list').addEventListener('click', function(event) {
@@ -145,7 +182,7 @@
                 alert(`You clicked on: ${placeItem.querySelector('h3').textContent}`);
             }
 
-            document.gertElementById('country-filter').addEventListener('change', function(event) {
+            document.getElementById('country-filter').addEventListener('change', function(event) {
               const selectedCountry = event.target.value;
               const placeItems = document.querySelectorAll('.place-item');
               
@@ -157,9 +194,18 @@
                 }
               });
             });
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const detailsButton = document.querySelectorAll('.details-button');
+
+                detailButton.forEach(button => {
+                    button.addEventListener('click', () => {
+                        alert('View Details button clicked!');
+                    });
+                });
+            });
         });
     </script>
-    <script src="scripts.js"></script>
 </body>
 <footer>
     <p>&copy; 2024 Your Company. All rights reserved.</p>
